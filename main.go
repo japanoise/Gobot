@@ -51,27 +51,27 @@ func printfortune(client *Client, page string) {
 func handlemsg(client *Client, msg, name string) {
 	//One-word commands
 	switch strings.ToLower(msg) {
-		case "ping", "!ping":
-			client.Send(PrivMsg(channel, "pong"))
-		case ".bots":
-			client.Send(PrivMsg(channel, "Gobot reporting in! [Golang] https://github.com/japanoise/Gobot"))
-		case "!comfort":
-			client.Send(PrivMsg(channel, fmt.Sprintf(
-				"%s %s", "Gobot loves you,", name)))
-		case "!quote", "!fortune":
-			printfortune(client, "login")
+	case "ping", "!ping":
+		client.Send(PrivMsg(channel, "pong"))
+	case ".bots":
+		client.Send(PrivMsg(channel, "Gobot reporting in! [Golang] https://github.com/japanoise/Gobot"))
+	case "!comfort":
+		client.Send(PrivMsg(channel, fmt.Sprintf(
+			"%s %s", "Gobot loves you,", name)))
+	case "!quote", "!fortune":
+		printfortune(client, "login")
 	}
-	
+
 	words := strings.Split(msg, " ")
-	
+
 	//Multi-word commands
 	switch strings.ToLower(words[0]) {
-		case "!translate":
-			client.Send(PrivMsg(channel, "That phrase translates to \"My Hovercraft Is Full Of Eels\""))
-		case "!quality":
-			if len(words) > 1 {
-				client.Send(PrivMsg(channel, fmt.Sprint("That was \x1F\x1D\x02", strings.ToUpper(strings.Join(words[1:], " ")), "\x0F / \x0304,02Quality!")))
-			}
+	case "!translate":
+		client.Send(PrivMsg(channel, "That phrase translates to \"My Hovercraft Is Full Of Eels\""))
+	case "!quality":
+		if len(words) > 1 {
+			client.Send(PrivMsg(channel, fmt.Sprint("That was \x1F\x1D\x02", strings.ToUpper(strings.Join(words[1:], " ")), "\x0F / \x0304,02Quality!")))
+		}
 	}
 }
 
