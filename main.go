@@ -44,7 +44,7 @@ func printfortune(client *Client, page string) {
 		strout := strings.Replace(string(out[:]), "\n", " ", -1)
 		client.Send(PrivMsg(channel, strout))
 	} else {
-		log.Output(1, err.Error())
+		fmt.Println(err.Error())
 	}
 }
 
