@@ -25,6 +25,15 @@ func Join(chanl string) *irc.Message {
 	return irc.ParseMessage(fmt.Sprintf("JOIN %s", chanl))
 }
 
+func Quit(msg string) *irc.Message {
+	return irc.ParseMessage(fmt.Sprintf("QUIT :%s", msg))
+}
+
+func CTCP(typ, targ, msg string) *irc.Message {
+	return irc.ParseMessage(fmt.Sprintf("PRIVMSG %s :\x01%s %s\x01",
+		targ, typ, msg))
+}
+
 func PrivMsg(targ, msg string) *irc.Message {
 	return irc.ParseMessage(fmt.Sprintf("PRIVMSG %s :%s", targ, msg))
 }
