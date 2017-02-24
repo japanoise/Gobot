@@ -5,10 +5,10 @@ import (
 	"flag"
 	"fmt"
 	"log"
+	"math/rand"
 	"os"
 	"os/exec"
 	"os/signal"
-	"os/user"
 	"strings"
 )
 
@@ -18,18 +18,17 @@ var waifu map[string]string
 
 const channel string = "##dankville"
 
+var nick *string = flag.String("n", "gobot", "Nickname")
+
 func main() {
-	current, _ := user.Current()
-	nick := flag.String("n", current.Username, "Nickname")
 	pass := flag.String("P", "", "Connection Password")
-	user := flag.String("u", current.Username, "Username")
 	server := flag.String("s", "chat.freenode.net", "Server to connect to")
 	port := flag.Int("p", 6667, "Port to use")
 	usetls := flag.Bool("z", false, "Use TLS")
 	noverify := flag.Bool("v", false, "Skip TLS connection verification")
 	flag.Parse()
 	client, err := New(TlsCon{*usetls, *noverify},
-		fmt.Sprint(*server, ":", *port), *nick, *user)
+		fmt.Sprint(*server, ":", *port), *nick, *nick)
 	if err != nil {
 		log.Fatalln("Could not connect to IRC server; ", err.Error())
 	}
@@ -122,6 +121,14 @@ func handlemsg(client *Client, msg, name string) {
 
 	//Multi-word commands
 	switch strings.ToLower(words[0]) {
+	case strings.ToLower(*nick) + ":":
+		var answer string
+		if Yes() {
+			answer = "Yes"
+		} else {
+			answer = "No"
+		}
+		client.Send(PrivMsg(channel, fmt.Sprintf("%s: %s.", name, answer)))
 	case "!translate":
 		client.Send(PrivMsg(channel, "That phrase translates to \"My Hovercraft Is Full Of Eels\""))
 	case "!quality":
@@ -179,4 +186,8 @@ func mainloop(client *Client) {
 			}
 		}
 	}
+}
+
+func Yes() bool {
+	return rand.Intn(2) == 1
 }
