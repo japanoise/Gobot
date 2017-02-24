@@ -101,6 +101,8 @@ func handlemsg(client *Client, msg, name string) {
 	switch strings.ToLower(msg) {
 	case "ping", "!ping":
 		client.Send(PrivMsg(channel, "pong"))
+	case "!opening":
+		client.Send(PrivMsg(channel, Opening()))
 	case ".bots":
 		client.Send(PrivMsg(channel, "Gobot reporting in! [Golang] https://github.com/japanoise/Gobot"))
 	case "!comfort", "i need a hug":
@@ -152,7 +154,7 @@ func handlemsg(client *Client, msg, name string) {
 					targ)))
 			} else {
 				client.Send(PrivMsg(channel, fmt.Sprintf("%s hugs %s",
-					waifu[targ], name)))
+					waifu[targ], targ)))
 			}
 		}
 	}
