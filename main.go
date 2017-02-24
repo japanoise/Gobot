@@ -105,10 +105,13 @@ func handlemsg(client *Client, msg, name string) {
 	case ".bots":
 		client.Send(PrivMsg(channel, "Gobot reporting in! [Golang] https://github.com/japanoise/Gobot"))
 	case "!comfort", "i need a hug":
-		client.Send(CTCP("ACTION", channel, fmt.Sprintf("hugs %s",
-			name)))
-		client.Send(PrivMsg(channel, fmt.Sprintf(
-			"%s %s", "Gobot loves you,", name)))
+		if waifu[name] == "" {
+			client.Send(CTCP("ACTION", channel, fmt.Sprintf("hugs %s",
+				name)))
+		} else {
+			client.Send(PrivMsg(channel, fmt.Sprintf("%s hugs %s",
+				waifu[name], name)))
+		}
 	case "!quote", "!fortune":
 		printfortune(client, "login")
 	case "!waifu":
@@ -133,6 +136,17 @@ func handlemsg(client *Client, msg, name string) {
 	case "!waifu":
 		if len(words) > 1 {
 			client.Send(PrivMsg(channel, announcewaifu(words[1])))
+		}
+	case "!comfort", "!hug":
+		if len(words) > 1 {
+			targ := words[1]
+			if waifu[targ] == "" {
+				client.Send(CTCP("ACTION", channel, fmt.Sprintf("hugs %s",
+					targ)))
+			} else {
+				client.Send(PrivMsg(channel, fmt.Sprintf("%s hugs %s",
+					waifu[targ], name)))
+			}
 		}
 	}
 }
