@@ -117,6 +117,8 @@ func handlemsg(client *Client, msg, name string) {
 		printfortune(client, "login")
 	case "!waifu":
 		client.Send(PrivMsg(channel, announcewaifu(name)))
+	case "!iching":
+		client.Send(PrivMsg(channel, IChing()))
 	}
 
 	words := strings.Split(msg, " ")
