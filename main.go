@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bufio"
 	"encoding/json"
 	"flag"
 	"fmt"
@@ -10,6 +11,7 @@ import (
 	"os/exec"
 	"os/signal"
 	"strings"
+	"time"
 )
 
 var target string
@@ -159,6 +161,24 @@ func handlemsg(client *Client, msg, name string) {
 					waifu[targ], targ)))
 			}
 		}
+	case "!kopipe", "!pasta":
+		if len(words) > 1 {
+			go spam(client, words[1])
+		}
+	}
+}
+
+func spam(client *Client, filename string) {
+	file, err := os.Open(fmt.Sprintf("kopipe/%s.txt", filename))
+	if err != nil {
+		return
+	}
+	defer file.Close()
+
+	scanner := bufio.NewScanner(file)
+	for scanner.Scan() {
+		client.Send(PrivMsg(channel, scanner.Text()))
+		time.Sleep(time.Second)
 	}
 }
 
