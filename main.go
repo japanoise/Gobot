@@ -169,7 +169,8 @@ func handlemsg(client *Client, msg, name string) {
 }
 
 func spam(client *Client, filename string) {
-	file, err := os.Open(fmt.Sprintf("kopipe/%s.txt", filename))
+	sane := strings.Replace(filename, ".", "", -1)
+	file, err := os.Open(fmt.Sprintf("kopipe/%s.txt", sane))
 	if err != nil {
 		return
 	}
